@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
 
-// Mapeo de caracteres para desencriptación
 const charMap = {
   '^': 'm', '(': ' ', ')': ' ', '~': 'o', '[': 'e', ']': 'n', '\\': 'i', '+': 'u',
   '?': 'a', '=': 't', '$': 'r', '*': 'p', '/': 'l', '¿': 'y', '{': 's',
@@ -9,20 +8,17 @@ const charMap = {
   ';': 'f', '!': 'j', '%': 'b'
 };
 
-// Función de desencriptación que maneja combinaciones de caracteres
 const decryptMessage = (encryptedText) => {
   let result = '';
   for (let i = 0; i < encryptedText.length; i++) {
     // Comprobar si tenemos "__" para traducirlo a "z"
     if (encryptedText[i] === '_' && encryptedText[i + 1] === '_') {
       result += 'z';
-      i++; // Saltar el siguiente "_"
+      i++;
     }
-    // Si es "-", traducir a "h"
     else if (encryptedText[i] === '-') {
       result += 'h';
     }
-    // Para otros caracteres, usa el mapeo normal
     else {
       result += charMap[encryptedText[i]] || encryptedText[i];
     }
