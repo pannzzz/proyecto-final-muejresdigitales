@@ -3,22 +3,35 @@ import './App.css';
 
 // Mapeo de caracteres para desencriptación
 const charMap = {
-  '^': 'm', '(': ' ', ')': ' ', '~': 'o', '[': 'e',']': 'n', '\\': 'i', '+': 'u',
+  '^': 'm', '(': ' ', ')': ' ', '~': 'o', '[': 'e', ']': 'n', '\\': 'i', '+': 'u',
   '?': 'a', '=': 't', '$': 'r', '*': 'p', '/': 'l', '¿': 'y', '{': 's',
-  '}': 'q', '¡': 'd', '¬': 'ó', '_': 'z', '-': ' ', '`': 'c', '#': 'v',
-  ';': 'f', '!': 'j', '%':'b',
+  '}': 'q', '¡': 'd', '¬': 'ó', '__': 'z', '-': 'h', '`': 'c', '#': 'v',
+  ';': 'f', '!': 'j', '%': 'b'
 };
 
-// Función de desencriptación
+// Función de desencriptación que maneja combinaciones de caracteres
 const decryptMessage = (encryptedText) => {
-  return encryptedText
-    .split('')
-    .map(char => charMap[char] || char) // Sustituye caracteres según el mapeo, o deja el original si no está en el mapa
-    .join('');
+  let result = '';
+  for (let i = 0; i < encryptedText.length; i++) {
+    // Comprobar si tenemos "__" para traducirlo a "z"
+    if (encryptedText[i] === '_' && encryptedText[i + 1] === '_') {
+      result += 'z';
+      i++; // Saltar el siguiente "_"
+    }
+    // Si es "-", traducir a "h"
+    else if (encryptedText[i] === '-') {
+      result += 'h';
+    }
+    // Para otros caracteres, usa el mapeo normal
+    else {
+      result += charMap[encryptedText[i]] || encryptedText[i];
+    }
+  }
+  return result;
 };
 
 function App() {
-  const [encryptedText, setEncryptedText] = useState('^[()`~^*/?`[()^+`-~()#[$()/~()%\\[]()}+[()[{=~¿()=$?%?!?]¡~()¿()`¬^~()[{=~()?+^[]=?()^\\{()*~¡[$[{()¡[()?=[]`\\¬]()¿()[{;+[$_~()`~]=\\]+~');
+  const [encryptedText, setEncryptedText] = useState('');
   const [decryptedText, setDecryptedText] = useState('');
 
   const handleDecrypt = () => {
